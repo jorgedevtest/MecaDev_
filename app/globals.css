@@ -1,26 +1,524 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(to right, #1a2a6c, #3a5fcd);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.header p {
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.content {
+  padding: 30px;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 25px;
+  border: 1px solid #ddd;
+}
+
+.info-table td {
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.info-table td:first-child {
+  font-weight: bold;
+  width: 20%;
+  background-color: #f5f5f5;
+}
+
+.editable-field {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.editable-field:focus {
+  outline: none;
+  border-color: #3a5fcd;
+  box-shadow: 0 0 0 2px rgba(58, 95, 205, 0.2);
+}
+
+select.editable-field {
+  cursor: pointer;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  margin: 25px 0 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3a5fcd;
+  color: #1a2a6c;
+}
+
+/* Estilos para la sección de computadoras */
+.computers-section {
+  margin: 30px 0;
+}
+
+.computers-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.computer-card {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.computer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-color: #3a5fcd;
+  background: #e9ecef;
+}
+
+.computer-number {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1a2a6c;
+  background: #dee2e6;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.computer-status {
+  font-size: 0.75rem;
+  text-align: center;
+  width: 100%;
+  padding: 2px;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-none {
+  color: #6c757d;
+  background: #e9ecef;
+}
+
+.status-maintenance {
+  color: #856404;
+  background: #fff3cd;
+}
+
+.status-updated {
+  color: #155724;
+  background: #d4edda;
+}
+
+.status-problem {
+  color: #721c24;
+  background: #f8d7da;
+}
+
+.computer-task {
+  font-size: 0.7rem;
+  text-align: center;
+  width: 100%;
+  padding: 2px;
+  border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Modal para editar tareas */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #333;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #1a2a6c;
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  resize: vertical;
+}
+
+.status-selector {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.status-option {
+  flex: 1;
+  padding: 10px;
+  margin: 0 5px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.status-option.selected {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 2px #3a5fcd;
+}
+
+.conclusiones-box {
+  width: 100%;
+  min-height: 180px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: all 0.3s;
+}
+
+.conclusiones-box:focus {
+  outline: none;
+  border-color: #3a5fcd;
+  box-shadow: 0 0 0 2px rgba(58, 95, 205, 0.2);
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-save {
+  background: linear-gradient(to right, #1a2a6c, #3a5fcd);
+  color: white;
+}
+
+.btn-reset {
+  background: linear-gradient(to right, #b21f1f, #d9534f);
+  color: white;
+}
+
+.btn-pdf {
+  background: linear-gradient(to right, #28a745, #218838);
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.footer {
+  background-color: #f5f5f5;
+  padding: 15px;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #ddd;
+  font-size: 0.9rem;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #1a2a6c, #3a5fcd);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* Estilos para el listado de tareas */
+.task-list {
+  width: 100%;
+  min-height: 200px;
+  padding: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  resize: vertical;
+  background: #f8f9fa;
+}
+
+.task-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #dee2e6;
+}
+
+.task-list-item:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.task-bullet {
+  color: #3a5fcd;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.task-text {
+  flex: 1;
+}
+
+.remove-task {
+  color: #dc3545;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.remove-task:hover {
+  background: #f8d7da;
+}
+
+.add-task-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+.add-task-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px 0 0 4px;
+  font-size: 1rem;
+}
+
+.add-task-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0 15px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-task-btn:hover {
+  background: #218838;
+}
+
+/* Estadísticas */
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  padding: 15px;
+  background: #e9ecef;
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.stat-box {
+  text-align: center;
+  padding: 10px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1a2a6c;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Estilos para PDF */
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .container {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .btn-container,
+  .add-task-container,
+  .remove-task {
+    display: none;
+  }
+
+  .computer-card {
+    height: auto;
+    padding: 5px;
+    border-width: 1px;
+  }
+
+  .computers-grid {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 900px) {
+  .computers-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .info-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .info-table td:first-child {
+    background-color: #e9ecef;
+    font-weight: bold;
+  }
+
+  .btn-container {
+    flex-direction: column;
+  }
+
+  .computers-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .status-selector {
+    flex-wrap: wrap;
+  }
+
+  .status-option {
+    flex: 0 0 48%;
+    margin-bottom: 10px;
+  }
+
+  .stats-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .computers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
