@@ -273,9 +273,7 @@ export default function Lab46Page() {
         {/* Sección de computadoras */}
         <div className="computers-section">
           <h2 className="section-title">Tareas por Computadora (LAB46)</h2>
-          <p className="section-subtitle">
-            Haga clic en una computadora para registrar las tareas realizadas
-          </p>
+          
           <div className="computers-grid">
             {Array.from({ length: 40 }, (_, i) => {
               const pcId = i + 1;

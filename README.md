@@ -18,3 +18,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 ![Screenshot](./public/image.png)
+
+### Mejorar el proyecto
+
+posibles componentes:
+
+src/
+├── components/
+│   ├── Header.tsx
+│   ├── InfoTable.tsx
+│   ├── ComputersGrid.tsx
+│   ├── ComputerCard.tsx
+│   ├── StatsContainer.tsx
+│   ├── Conclusions.tsx
+│   ├── ActionButtons.tsx
+│   ├── Footer.tsx
+│   ├── Modal.tsx
+├── app/
+│   ├── page.tsx
